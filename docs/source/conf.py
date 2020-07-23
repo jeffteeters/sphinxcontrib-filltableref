@@ -27,8 +27,13 @@ author = 'Jeff Teeters'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinxcontrib-filltableref',
+extensions = ['sphinxcontrib.filltableref',
+'sphinxcontrib.bibtex',
+'sphinxcontrib.bibtex2',
 ]
+bibtex_bibfiles = ['references/refs.bib']
+bibtex_style = 'footapastyle'
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
