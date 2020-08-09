@@ -13,7 +13,7 @@ setup(
     license="MIT",
     description="Fill data table with values linked to references",
     long_description=long_desc,
-    install_requires=["Sphinx>=2.0", "sphinxcontrib-bibtex"],
+    install_requires=["Sphinx>=2.0", "sphinxcontrib-bibtexpdflink"],
     # zip_safe=False,
     packages=find_packages(),
     namespace_packages=["sphinxcontrib"],

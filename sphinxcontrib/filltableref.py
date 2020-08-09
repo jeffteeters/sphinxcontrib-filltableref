@@ -39,91 +39,90 @@ from pybtex.style.template import (
 # exclude_patterns = ['_build']
 
 
-class ApaLabelStyle(AlphaLabelStyle):
-    def format_label(self, entry):
-        # import pdb; pdb.set_trace()
-        # from: https://stackoverflow.com/questions/55942749/how-do-you-change-the-style-of-pybtex-references-in-sphinx
-        label = entry.key
-        return label
+# class ApaLabelStyle(AlphaLabelStyle):
+#     def format_label(self, entry):
+#         # import pdb; pdb.set_trace()
+#         # from: https://stackoverflow.com/questions/55942749/how-do-you-change-the-style-of-pybtex-references-in-sphinx
+#         label = entry.key
+#         return label
 
-class FootApaStyle(UnsrtStyle):
-    def format_web_refs(self, e):
-        # based on urlbst output.web.refs
-        return sentence [
-            optional [ self.format_url(e) ],
-            optional [ self.format_eprint(e) ],
-            optional [ self.format_pubmed(e) ],
-            optional [ self.format_doi(e) ],
-            # following added for pseudo cerebellum
-            optional [ self.format_pdf(e) ],
-            # optional [ self.format_rst(e) ],  # don't include rst link on footcite
-            ]
+# class FootApaStyle(UnsrtStyle):
+#     def format_web_refs(self, e):
+#         # based on urlbst output.web.refs
+#         return sentence [
+#             optional [ self.format_url(e) ],
+#             optional [ self.format_eprint(e) ],
+#             optional [ self.format_pubmed(e) ],
+#             optional [ self.format_doi(e) ],
+#             # following added for pseudo cerebellum
+#             optional [ self.format_pdf(e) ],
+#             # optional [ self.format_rst(e) ],  # don't include rst link on footcite
+#             ]
 
-    def format_pdf(self, entry):
-        # if entry.key == "JaeckelLA-1989a":
-        #     print("found JaeckelLA-1989a key")
-        # print("In format_pdf, html_static_path2=%s" % html_static_path2)
-        global saved_app
-        base_path = saved_app.srcdir
-        html_static_path = saved_app.config["html_static_path"]
-        # import pdb; pdb.set_trace()
-        pdf_name = entry.key + ".pdf"
-        search_path = os.path.join(base_path, html_static_path[0], "papers", pdf_name)
-        # search_path = "./_static/papers/" + pdf_name
-        if os.path.isfile(search_path):
-            print("----------- Found %s" % pdf_name)
-            target_path = "../_static/papers/" + pdf_name
-            return words [
-                'pdf:',
-                href [ target_path, pdf_name ]
-            ]
-        else:
-            return words [""]
+#     def format_pdf(self, entry):
+#         # if entry.key == "JaeckelLA-1989a":
+#         #     print("found JaeckelLA-1989a key")
+#         # print("In format_pdf, html_static_path2=%s" % html_static_path2)
+#         global saved_app
+#         base_path = saved_app.srcdir
+#         html_static_path = saved_app.config["html_static_path"]
+#         # import pdb; pdb.set_trace()
+#         pdf_name = entry.key + ".pdf"
+#         search_path = os.path.join(base_path, html_static_path[0], "papers", pdf_name)
+#         # search_path = "./_static/papers/" + pdf_name
+#         if os.path.isfile(search_path):
+#             print("----------- Found %s" % pdf_name)
+#             target_path = "../_static/papers/" + pdf_name
+#             return words [
+#                 'pdf:',
+#                 href [ target_path, pdf_name ]
+#             ]
+#         else:
+#             return words [""]
 
-    def format_rst(self, entry):
-        # create link to rst file if present
-        global saved_app
-        base_path = saved_app.srcdir
-        rst_name = entry.key + ".rst"
-        # if rst_name == "JaeckelLA-1989a.rst":
-        #     print("found JaeckelLA-1989a key")
-        #     import pdb; pdb.set_trace()
-        # search_path = "./references/" + rst_name
-        search_path = os.path.join(base_path, "references", rst_name)
-        if os.path.isfile(search_path):
-            html_name = entry.key + ".html"
-            target_path = "../references/" + html_name
-            print("----------- Found %s", rst_name)   
-            return words [
-                'Notes:',
-                href [ target_path, html_name ]
-            ]
-        else:
-            return words [""]
+#     def format_rst(self, entry):
+#         # create link to rst file if present
+#         global saved_app
+#         base_path = saved_app.srcdir
+#         rst_name = entry.key + ".rst"
+#         # if rst_name == "JaeckelLA-1989a.rst":
+#         #     print("found JaeckelLA-1989a key")
+#         #     import pdb; pdb.set_trace()
+#         # search_path = "./references/" + rst_name
+#         search_path = os.path.join(base_path, "references", rst_name)
+#         if os.path.isfile(search_path):
+#             html_name = entry.key + ".html"
+#             target_path = "../references/" + html_name
+#             print("----------- Found %s", rst_name)   
+#             return words [
+#                 'Notes:',
+#                 href [ target_path, html_name ]
+#             ]
+#         else:
+#             return words [""]
 
-class ApaStyle(FootApaStyle):
-    default_label_style = 'apa'
-    default_sorting_style = 'author_year_title'
+# class ApaStyle(FootApaStyle):
+#     default_label_style = 'apa'
+#     default_sorting_style = 'author_year_title'
 
-    def format_web_refs(self, e):
-        # based on urlbst output.web.refs
-        return sentence [
-            optional [ self.format_url(e) ],
-            optional [ self.format_eprint(e) ],
-            optional [ self.format_pubmed(e) ],
-            optional [ self.format_doi(e) ],
-            # following added for pseudo cerebellum
-            optional [ self.format_pdf(e) ],
-            optional [ self.format_rst(e) ],   # include information about note page
-            ]
+#     def format_web_refs(self, e):
+#         # based on urlbst output.web.refs
+#         return sentence [
+#             optional [ self.format_url(e) ],
+#             optional [ self.format_eprint(e) ],
+#             optional [ self.format_pubmed(e) ],
+#             optional [ self.format_doi(e) ],
+#             # following added for pseudo cerebellum
+#             optional [ self.format_pdf(e) ],
+#             optional [ self.format_rst(e) ],   # include information about note page
+#             ]
 
 
-register_plugin('pybtex.style.labels', 'apa', ApaLabelStyle)
-register_plugin('pybtex.style.formatting', 'apastyle', ApaStyle)
-register_plugin('pybtex.style.formatting', 'footapastyle', FootApaStyle)
-# register_plugin('pybtex.style.sorting','apastyle', ApaStyle)
-register_plugin('pybtex.style.sorting','apastyle', author_year_title)
-
+# register_plugin('pybtex.style.labels', 'apa', ApaLabelStyle)
+# register_plugin('pybtex.style.formatting', 'apastyle', ApaStyle)
+# register_plugin('pybtex.style.formatting', 'footapastyle', FootApaStyle)
+# # register_plugin('pybtex.style.sorting','apastyle', ApaStyle)
+# register_plugin('pybtex.style.sorting','apastyle', author_year_title)
 
 
 
@@ -170,8 +169,11 @@ def retrieve_directive_info(env, key):
     global envinfokey
     return env.envinfokey[key]
 
-def make_tds(envinfo):
-    # convert envinfo to nested structures that are used to make the tables and links
+
+def make_tds(env):
+    global envinfokey
+    # convert envinfo (stored in: getattr(env, envinfokey)) to nested structures that
+    # are used to make the tables and links
     #
     # Input (envinfo) contains:
     #
@@ -243,6 +245,10 @@ def make_tds(envinfo):
 
     # start of mainline for function get_tds
     tds = {"tbldata": {}, "tblrender": {} }
+    if not hasattr(env, envinfokey):
+        # no envinfo, return empty tds structure
+        return tds
+    envinfo = getattr(env, envinfokey)
     # convert envinfo["tblrender"] to tds["tblrender"]
     for rdi in envinfo["tblrender"]:
         table_name = rdi["table_name"]
@@ -1238,7 +1244,7 @@ def replace_tbldata_and_tblrender_nodes(app, doctree, fromdocname):
     global envinfokey
     # print("starting replace_tbldata_and_tblrender_nodes, docname='%s'" % fromdocname)
     env = app.builder.env
-    tds = make_tds(getattr(env, envinfokey))
+    tds = make_tds(env)
     ftd = format_table_data(tds, app, fromdocname)
     # print("tds['tbldata']=")
     # pp.pprint(tds['tbldata'])
