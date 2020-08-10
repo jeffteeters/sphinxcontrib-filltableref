@@ -156,7 +156,7 @@ def save_directive_info(env, key, info):
     global envinfokey
     assert key in ('tbldata', 'tblrender'), "save_directory_info, invalid key: %s" % key
     if not hasattr(env, envinfokey):
-        print("*** initializing envinfokey *** ")
+        # print("*** initializing envinfokey *** ")
         initial_value = {"tbldata":[], "tblrender":[]}
         setattr(env, envinfokey, initial_value)
     # print("saving info in env.%s[%s]" % (envinfokey, key))
@@ -400,11 +400,11 @@ def extract_gridtable_properties(tabledata):
         row_labels = [slt(bodyrows[i][0][3]) for i in range (len(bodyrows))]
         # row_map = { row_labels[i]:i for i in range(len(row_labels))}
         # col_map = { col_labels[i]:i for i in range(len(col_labels))}
-        print("row_title='%s'" % row_title)
-        print("row_labels='%s'" % row_labels)
-        print("col_title='%s'" % col_title)
-        print("col_labels='%s'" % col_labels)
-        print("ct_offset='%s'" % ct_offset)
+        # print("row_title='%s'" % row_title)
+        # print("row_labels='%s'" % row_labels)
+        # print("col_title='%s'" % col_title)
+        # print("col_labels='%s'" % col_labels)
+        # print("ct_offset='%s'" % ct_offset)
         # print("row_map=%s" % row_map)
         # print("col_map=%s" % col_map)
         gridtable_properties = { # "tabledata": tabledata,
@@ -561,12 +561,12 @@ class TblrenderDirective(SphinxDirective):
             ptable_properties = None
         gridlayout = self.options.get('gridlayout')
         if gridlayout is not None:
-            print("found gridlayout:\n%s" % gridlayout)
+            # print("found gridlayout:\n%s" % gridlayout)
             grid_tabledata = parse_grid_table(gridlayout)
-            print("headrows=")
-            pp.pprint(grid_tabledata[1])
-            print("bodyrows=")
-            pp.pprint(grid_tabledata[2])
+            # print("headrows=")
+            # pp.pprint(grid_tabledata[1])
+            # print("bodyrows=")
+            # pp.pprint(grid_tabledata[2])
             gridtable_properties = extract_gridtable_properties(grid_tabledata)
             tableline = self.lineno  # a guess
             # grid_table_rst = build_table(grid_tabledata, tableline, widths="grid", stub_columns=1, classes="tblrender")
@@ -785,8 +785,8 @@ class TbldataDirective(SphinxDirective):
                     rst_ref.append(":cite:`%s` :footcite:`%s`" % (ref, ref))
                 rst_ref = "; ".join(rst_ref)
                 # rst_ref = ":cite:`%s` :footcite:`%s`" % (elements[3], elements[3])
-                if 'Albus' in rst_ref:
-                    print("multiple reference rst_ref='%s'" % rst_ref)
+                # if 'Albus' in rst_ref:
+                #    print("multiple reference rst_ref='%s'" % rst_ref)
                 show_val = elements[2]
             table_rst += "   * - %s\n     - %s\n     - %s\n     - %s\n     - %s\n" % (
                 target_id, elements[0], elements[1], show_val, rst_ref)
@@ -806,7 +806,7 @@ class TbldataDirective(SphinxDirective):
         # print("after saving directive info, tbldata node has:")
         # pp.pprint(dir(tbldata_node))
         save_directive_info(self.env, 'tbldata', directive_info)
-        print("saved directive_info to tbldata_node id = %s" % id(tbldata_node))
+        # print("saved directive_info to tbldata_node id = %s" % id(tbldata_node))
         # output_nodes = [target_node, tbldata_node, ] + rst_nodes
         # output_nodes = [target_node, ] + rst_nodes + [tbldata_node, ]
         output_nodes = [target_node, ] + title_nodes + [ tbldata_node, ] + table_nodes
@@ -1284,7 +1284,7 @@ def replace_tbldata_and_tblrender_nodes(app, doctree, fromdocname):
         #      "grid_tabledata": grid_tabledata,
         #      "make_ptable": make_ptable
         # }
-        print("made it to body of replace_tbldata_and_tblrender_nodes, docname=%s" % di["docname"])
+        # print("made it to body of replace_tbldata_and_tblrender_nodes, docname=%s" % di["docname"])
         # sect = nodes.section()
         node_lst = []  # node list
         # para1 = nodes.paragraph()
@@ -1309,12 +1309,12 @@ def replace_tbldata_and_tblrender_nodes(app, doctree, fromdocname):
             grid_tabledata = di["grid_tabledata"]
             gridtable = render_gridtable(di, grid_tabledata, ftd)
             node_lst.append(gridtable)
-        print("in replace_tbldata_and_tblrender_nodes, about to replace_self")
+        # print("in replace_tbldata_and_tblrender_nodes, about to replace_self")
         # node.set_class("tbldata-title")
         node += node_lst
         # import pdb; pdb.set_trace()
         node.replace_self(node_lst)
-        print("in replace_tbldata_and_tblrender_nodes, just replaced self")
+        # print("in replace_tbldata_and_tblrender_nodes, just replaced self")
     # return
 
     # insert description into tbldata tables
@@ -1325,8 +1325,8 @@ def replace_tbldata_and_tblrender_nodes(app, doctree, fromdocname):
             desc_rst = tds['tblrender'][table_name][0]['desc_rst']
 
             # import pdb; pdb.set_trace()
-            print("replacing tbldata node in docname '%s' with:" % di["docname"])
-            pp.pprint(desc_rst)
+            # print("replacing tbldata node in docname '%s' with:" % di["docname"])
+            # pp.pprint(desc_rst)
             # insert desc_rsts before tables
             # node.children[2:2] = desc_rst
             # node += desc_rest # crashes with:  NotImplementedError: Unknown node: tblrender
@@ -1626,7 +1626,7 @@ def setup(app):
     # save app so can get config value and source directory for building links to PDF files
     global saved_app
     saved_app = app
-    print("Starting setup in tbldata.py")
+    # print("Starting setup in tbldata.py")
     # app.add_config_value('filltableref_base_path', False, 'html')
 
     app.add_node(tblrender)
