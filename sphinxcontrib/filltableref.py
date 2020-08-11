@@ -610,7 +610,9 @@ class TblrenderDirective(SphinxDirective):
              "make_ptable": make_ptable
              }
         # save directive_info as attribute of object so is easy to retrieve in replace_tbldata_and_tblrender_nodes
-        tblrender_node.directive_info = directive_info
+        # tblrender_node.directive_info = directive_info
+        tblrender_node['directive_info'] = directive_info
+        # import pdb; pdb.set_trace()
         save_directive_info(self.env, 'tblrender', directive_info)
         # return target_node for later reference from tbldata directive
         # return tblrender_node to be replaced later by content of table
@@ -802,7 +804,8 @@ class TbldataDirective(SphinxDirective):
         directive_info = { "docname": self.env.docname, "lineno": self.lineno, "table_name":table_name,
             "valrefs":valrefs_decoded, "target":target_node} #  "tbldata_node": tbldata_node.deepcopy()
         # save directive_info as attribute of object so is easy to retrieve in replace_tbldata_and_tblrender_nodes
-        tbldata_node.directive_info = directive_info
+        # tbldata_node.directive_info = directive_info
+        tbldata_node['directive_info'] = directive_info
         # print("after saving directive info, tbldata node has:")
         # pp.pprint(dir(tbldata_node))
         save_directive_info(self.env, 'tbldata', directive_info)
@@ -1273,7 +1276,8 @@ def replace_tbldata_and_tblrender_nodes(app, doctree, fromdocname):
     # insert description into tbldata tables
     # temporary, try to get directive info for tbldata
     for node in doctree.traverse(tblrender):
-        di = node.directive_info
+        # di = node.directive_info
+        di = node['directive_info']
         # print ("visiting node, source=%s" % node.source)
         # print ("directive_info=%s" % di)
         # {'docname': 'index', 'table_name': 'num_cells', 'rows': '"Cell type", stellate, grannule',
@@ -1319,8 +1323,10 @@ def replace_tbldata_and_tblrender_nodes(app, doctree, fromdocname):
 
     # insert description into tbldata tables
     for node in doctree.traverse(tbldata):
-        if hasattr(node, 'directive_info'):
-            di = node.directive_info
+        # if hasattr(node, 'directive_info'):
+        #     di = node.directive_info
+        if 'directive_info' in node.attributes:
+            di = node['directive_info']
             table_name = di['table_name']
             desc_rst = tds['tblrender'][table_name][0]['desc_rst']
 
