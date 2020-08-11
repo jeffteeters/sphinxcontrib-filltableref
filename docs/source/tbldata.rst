@@ -62,6 +62,8 @@ Where:
 
 An example is shown below:
 
+.. code-block:: rst
+
 
    .. tbldata:: table_loebner_fig2a
       :valrefs: ["Source cell:basket", "Cell count", "7.5x10^6", "LoebnerEE-1989"],

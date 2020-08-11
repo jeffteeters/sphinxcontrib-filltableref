@@ -994,6 +994,7 @@ def format_table_data(tds, app, fromdocname):
                 ddis = tds["tbldata"][table_name][row][col]
                 para = nodes.paragraph()
                 first_node = True
+                # import pdb; pdb.set_trace()
                 for ddi in ddis:
                     target = ddi["target"]
                     row_info = ddi["valref"]
@@ -1251,6 +1252,8 @@ def replace_tbldata_and_tblrender_nodes(app, doctree, fromdocname):
     ftd = format_table_data(tds, app, fromdocname)
     # print("tds['tbldata']=")
     # pp.pprint(tds['tbldata'])
+    # print("ftd=")
+    # pp.pprint(ftd)
     # import pdb; pdb.set_trace()
     # tds has format:
     # {
@@ -1344,6 +1347,8 @@ def replace_tbldata_and_tblrender_nodes(app, doctree, fromdocname):
             prevp = node.parent.children[i-1]
             prevp += nodes.Text(' ', ' ')
             prevp += desc_rst[0].children
+            # remove tbldata node
+            node.replace_self(nodes.Text('', ''))
             # node.replace_self(desc_rst)
     return
 
