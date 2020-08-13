@@ -1,3 +1,5 @@
+.. _tblrender:
+
 tblrender
 =========
 
@@ -23,12 +25,27 @@ but without including referenced values.  It is used in the following way:
       <ptable specification> AND/OR <gridtable specification>
 
 
-The last line above indicates either a <ptable specification> or a <gridtable specification> or
-both.  If both are present, they must specify exactly the same table or an error is generated
-(except if the only difference between them is that prefilled-values are included in the
-<gridtable specification> table since such values cannot be specified using the
-<ptable specification>).  If both specifications are present, the <gridtable specification> is
-used to create the table.  Both specifications are described below.
+The last line above indicates that there is an choice for the remainder of the directive:
+either a <ptable specification> or a <gridtable specification> or both.  These two specifications
+accomplish the same thing, which is to define the table layout, but do it in
+different ways.  The <ptable specification> uses parameter values that list the table row and
+column titles and labels.  The <gridtable specification> uses a graphical layout that includes
+the row and column titles and labels in a table.  The <ptable specification> will usually
+be shorter to write, but not as intuitative to understand since it does not look like a table.
+The <gridtable specification> will be easier to understand (since it looks like the finished table),
+but will be more laborious to create since it is longer and must be created by drawing lines using
+characters that must align accross rows.
+
+The only difference between the functionality of the two is that the
+<gridtable specification> allows including prefilled values in the cells, but this cannot be
+done with the <ptable specification>.  Although only one of the specifications will normally be
+used in a single *tblrender* directive, it's permissible to include both.  If that's done, they
+must specify exactly the same table (except for any prefilled values in the <gridtable specification>)
+or an error is generated.  Also, if both specifications are present, the <gridtable specification>
+is used to create the table (which will include any prefilled values).  Including
+both specifications in the same *tblrender* directive is useful for documentation describing
+the specifications (this document) since that shows explicitly the relationship between them.
+ 
   
 
 ptable specification
@@ -52,30 +69,52 @@ The entities in angle brackets are either strings (enclosed in single or double 
    column below the <row title>).  Example: "City".
 
 <row labels>
-   List of the row labels, each element seperated by a comma.  Example: "New York", "London", "Chicago", ...
+   List of the row labels, each element seperated by a comma.  These go in the first column, under the <row title>.
+   Example: "New York", "London", "Chicago", ...
 
 <col title>
    The title displayed above the <col labels> in the header of the table.  Example: "Season" (for a
    table showning average temperaure during each season).
 
 <col labels>
-   List of the column labels, each element seperated by a comma.  Example: "Spring", "Fall", "Summer", ...
+   List of the column labels, each element seperated by a comma.  Example: "Population", "Spring", "Fall", "Summer", ...
 
 <ct_offset>
    A positive integer specifying the number of columns (counting left to right), for which the <col label> is
    not an instance of the <col title>.  If not specified, the default is one (since the first column contains
-   the <row title> which is not an instance of the <col title>).  A value greater
+   the <row title>, which is not an instance of the <col title>).  A value greater
    than one specifies a table in which the header for some columns after the first column have a <col lable>
    that does not appear under the <col title>.  This is used for creating the summary table header.
-    
+
+   For example, with the previous example values, <ct_offset> would be 2, to indicate that the "Population"
+   column label is not an instance of the <col title> ("Season"), and thus "Population" should not be under
+   "Season" in the table header.  e.g., the header (and table) would look like:
+
+   .. code-block:: rst
+   
+      +----------+------------+-----------------------------------+
+      |          |            |  Season                           |
+      |          |            +--------+--------+--------+--------+
+      | City     | Population | Fall   | Winter | Spring | Summer |
+      +==========+============+========+========+========+========+
+      | New York |            |        |        |        |        |
+      +----------+------------+--------+--------+--------+--------+
+      | London   |            |        |        |        |        |
+      +----------+------------+--------+--------+--------+--------+
+      | Chicago  |            |        |        |        |        |
+      +----------+------------+--------+--------+--------+--------+
+       
 <expanded_col_title>
    This is a string that can be used in place of the <col title> as the column title for the column containing
-   values in the source tables (made by the *tbldata* directive).  If the <gridtable specification> is used
+   values in the source tables (made by the :ref:`tbldata` directive).  If the <gridtable specification> is used
    (in addition to the <ptable specification>), then the <expanded_col_title> must match a value that is
    derived from the <gridtable specification>.  This value is formed by first parsing the gridtable to obtain
    the <col title>, <col labels> and <ct_offset>; then combining the first <ct_offset> <column labels> and
    the <col title> separated by " or ".  In other words, what is specified explicitly using the <ptable specification>
    must match the layout given in the <gridtable specification> if both are present.
+
+   Using the values in the above examples, if derived from a <gridtable specification>, <expanded_col_title>
+   would be "Population or Season"
 
 
 An example is below:
@@ -169,7 +208,7 @@ An full example including both types of specifications is:
 
 It is rendered as shown below.  The values for some of the cells followed by links to the source
 of the value are fill-in during the rendering process.  These values are specified in the "source"
-table using the *tbldata* directive which is described and shown on the :ref:`tbldata` page.
+table using the :ref:`tbldata` directive.
 
 .. _table_loebner_fig2a:
 

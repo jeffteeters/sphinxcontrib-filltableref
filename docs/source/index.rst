@@ -1,5 +1,5 @@
-Add link to PDF and Notes to citations generated Sphinx-bibtex extension
-========================================================================
+Fill tables with values that are linked to references
+=====================================================
 
 .. toctree::
    about

@@ -7,13 +7,13 @@ This Sphinx extension (named "sphinx-filltableref", parsed as "fill table ref")
 enables creating “summary” tables of data that link to other pages which contain “source” tables
 that specify where the data is from (the reference) and can also describe the data values in more detail.
 
-The extension defines two Sphinx directives:  The *tblrender* directive is used to specify what the
+The extension defines two Sphinx directives:  The :ref:`tblrender` directive is used to specify what the
 summary table looks like (row and column labels and titles), but not the referenced data values.
-The *tbldata* directive is used to specify the data values 
+The :ref:`tbldata` directive is used to specify the data values 
 along with the source (reference).  When a document is processed, information
-specified in both types of directives are combined: data values from the tbldata directives are
-used to fill in the summary table specified in the “tblrender” directive.  The
-values filled-in link to the "source" tables specified by the tbldata directive
+specified in both types of directives are combined: data values from the *tbldata* directives are
+used to fill in the summary table specified in the *tblrender* directive.  The
+values filled-in link to the "source" tables specified by the *tbldata* directive
 that display the citation for the values.
  
 
