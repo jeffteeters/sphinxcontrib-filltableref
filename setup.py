@@ -7,7 +7,7 @@ with open("README.rst") as f:
 
 setup(
     name="sphinxcontrib-filltableref",
-    version="0.1.3",
+    version="0.1.4",
     author="Jeff Teeters",
     author_email="jeff@teeters.us",
     license="MIT",
@@ -17,6 +17,7 @@ setup(
     # zip_safe=False,
     packages=find_packages(),
     namespace_packages=["sphinxcontrib"],
+    package_data={"sphinxcontrib": ["*.css", "*.js"]},
     # package_data={"sphinxcontrib": ["*.css", "*.js"]},
     # project_urls={
     #     "Documentation": "https://sphinxcontrib-temptestplatformpicker.readthedocs.io/",

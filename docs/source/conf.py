@@ -61,6 +61,15 @@ html_theme = "sphinx_rtd_theme"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+# below added, based on:
+# https://docs.readthedocs.io/en/stable/guides/adding-custom-css.html
+# These paths are either relative to html_static_path
+# or fully qualified paths (eg. https://...)
+# html_css_files = [
+#    'css/tbldata.css',
+#]
+
+
 # specify master_doc for readthedocs.io (otherwise "contents.rst" is the default)
 # from: https://stackoverflow.com/questions/56336234/build-fail-sphinx-error-contents-rst-not-found
 master_doc = 'index'

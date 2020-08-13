@@ -37,7 +37,7 @@ sphinxcontrib.bibtexpdflink, sphinxcontrib.bibtex, and sphinxcontrib.bibtex2):
 
 
 If it's desired to allow the citations to include links to PDF files and note files
-(which is the purpose of the sphinxcontrib-bibtexpdflink extension), add the locations of the
-PDF and notes file directories using config variables *bibtexpdflink_note_dir*
+(which is the purpose of the *sphinxcontrib-bibtexpdflink* extension), add the locations of the
+PDF and notes file directories to the ``conf.py`` fileusing config variables *bibtexpdflink_note_dir*
 and *bibtexpdflink_pdf_dir* as describe in the
 `documentation for sphinxcontrib-bibtexpdflink <https://sphinxcontrib-bibtexpdflink.readthedocs.io/>`_.

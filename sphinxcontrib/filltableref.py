@@ -19,7 +19,7 @@ import re
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 import json
-
+from sphinx.util.osutil import copyfile
 
 
 # -- Added for APA style
@@ -576,7 +576,8 @@ class TblrenderDirective(SphinxDirective):
             grid_tabledata = None
         if gridtable_properties is None and ptable_properties is None:
             sys.exit("Must specify row and col properties or a gridtable or both")
-        make_ptable = ptable_properties is not None
+        # if both specified, use gridtable
+        make_ptable = ptable_properties is not None and gridtable_properties is None
         if gridtable_properties is not None:
             if ptable_properties is not None:
                 assert gridtable_properties["row_title"] == ptable_properties["row_title"]
@@ -687,6 +688,68 @@ class TblrenderDirective(SphinxDirective):
 # 4. Run the parser, populating the document tree::
 
 #        parser.parse(input, document)
+
+tbldata_css = """
+.tbldata-title {
+  font-size: 120%;
+}
+
+table.tblrender p {
+   font-size:smaller
+}
+
+
+/* <dt class="bibtex label" id="albusjs-1981"><span class="brackets">AlbusJS-1981</span></dt>
+from: https://developer.mozilla.org/en-US/docs/Learn/CSS/Howto/Generated_content
+https://stackoverflow.com/questions/9882257/how-to-reference-a-long-class-name-with-spaces-in-css
+https://stackoverflow.com/questions/5467605/add-a-space-after-an-element-using-after
+*/
+
+span.brackets::before {
+  /* font-weight: bold; */
+  content: "[";
+}
+span.brackets::after {
+  /* font-weight: bold; */
+  white-space: pre;
+  content: "] ";
+}
+"""
+
+CSS_FILENAME = "filltableref.css"
+
+def add_assets(app):
+    app.add_css_file(CSS_FILENAME)
+    # app.add_js_file(JS_FILENAME)
+
+
+def copy_assets(app, exception):
+    if app.builder.name not in ["html", "readthedocs"] or exception:
+        return
+    for filename in [CSS_FILENAME, ]: # JS_FILENAME]:
+        copyfile(os.path.join(os.path.abspath(os.path.dirname(__file__)), filename),
+                 os.path.join(app.builder.outdir, "_static", filename))
+
+
+# from: https://groups.google.com/forum/#!msg/sphinx-users/Z-wcktOhIAc/pGDWO0yVBQAJ
+
+def html_page_context_NOT_USED(app, pagename, templatename, context, doctree):
+    """Add CSS string to HTML pages that contain code cells."""
+    global tbldata_css
+    if 'body' in context:
+        context['body'] = '\n<style>' + tbldata_css + '</style>\n' + context['body']
+        print("added css to body")
+    else:
+        print("did NOT add css to body")
+    # style = ''
+    # if doctree and doctree.get('nbsphinx_include_css'):
+    #     style += CSS_STRING % app.config
+    # if doctree and app.config.html_theme in ('sphinx_rtd_theme', 'julia'):
+    #     style += CSS_STRING_READTHEDOCS
+    # if doctree and app.config.html_theme in ('cloud', 'redcloud'):
+    #     style += CSS_STRING_CLOUD
+    # if style:
+    #     context['body'] = '\n<style>' + style + '</style>\n' + context['body']
 
 class TbldataDirective(SphinxDirective):
     # tbldata directive specifies data to be included in a table, and also to be shown where the directive is
@@ -1301,8 +1364,8 @@ def replace_tbldata_and_tblrender_nodes(app, doctree, fromdocname):
         # node_lst += di["desc_rst"]
         if di["make_ptable"]:
             para2 = nodes.paragraph()
-            msg = "ptable follows"
-            para2 += nodes.Text(msg, msg)
+            # msg = "ptable follows"
+            # para2 += nodes.Text(msg, msg)
             node_lst.append(para2)
             # ptable = render_ptable(di, ftd)
             grid_tabledata = generate_grid_tabledata(di)
@@ -1310,8 +1373,8 @@ def replace_tbldata_and_tblrender_nodes(app, doctree, fromdocname):
             node_lst.append(ptable)
         if di["grid_tabledata"] is not None:
             para3 = nodes.paragraph()
-            msg = "gridtable follows"
-            para3 += nodes.Text(msg, msg)
+            # msg = "gridtable follows"
+            # para3 += nodes.Text(msg, msg)
             node_lst.append(para3)
             grid_tabledata = di["grid_tabledata"]
             gridtable = render_gridtable(di, grid_tabledata, ftd)
@@ -1650,6 +1713,12 @@ def setup(app):
     app.add_directive('tblrender', TblrenderDirective)
     app.connect('doctree-resolved', replace_tbldata_and_tblrender_nodes)
     app.connect('env-purge-doc', purge_directive_info)
+    # from:
+    # https://github.com/spatialaudio/nbsphinx/blob/ca978181ecb045974d399b522c03b96305b85290/src/nbsphinx.py#L1488-L1498
+    # app.connect('html-page-context', html_page_context)
+    # following for css files, from https://pypi.org/project/sphinxcontrib-platformpicker/
+    app.connect("builder-inited", add_assets)
+    app.connect("build-finished", copy_assets)
 
     return {
         'version': '0.1',
