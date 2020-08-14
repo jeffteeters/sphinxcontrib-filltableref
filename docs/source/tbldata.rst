@@ -3,9 +3,12 @@
 tbldata
 =======
 
-The ``tbldata`` directive is used to specify data values that included in
-to the summary table along with citation(s) to publications from which the values
-were found.  It has the following format:
+The *tbldata* directive (abbreviation for "table data") is used to specify data values
+that are included in to the summary table (defined by the :ref:`tblrender` directive)
+along with citation(s) to publications from which the values were found.  There can
+be multiple *tbldata* directives for each *tblrender* directive (each *tbldata*
+directive specifying additional data values).  The *tbldata* directive has the
+following format:
 
 .. code-block:: bnf
 
@@ -31,7 +34,7 @@ were found.  It has the following format:
 The entities in angle brackets are:
 
 <table_name>
-   Name of the summary table (used in the *tblrender* directive).
+   Name of the summary table (used in the :ref:`tblrender` directive).
 
 <id_prefix>
    A short prefix (for example 'a', 'b', 'gr') which will be used to make an id
@@ -40,7 +43,7 @@ The entities in angle brackets are:
    should be unique for each source table.
 
 <row title>
-   The row title specified in the ``tblrender`` directive.
+   The row title specified in the :ref:`tblrender` directive.
 
 <expanded col title>
    Either the :ref:`<expanded_col_title> <tblrender_expanded_col_title>` 

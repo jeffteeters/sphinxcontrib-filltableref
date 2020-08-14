@@ -11,15 +11,15 @@ The extension defines two Sphinx directives:  The :ref:`tblrender` directive is 
 summary table looks like (row and column labels and titles), but not the referenced data values.
 The :ref:`tbldata` directive is used to specify the data values 
 along with the source (reference).  When a document is processed, information
-specified in both types of directives are combined: data values from the *tbldata* directives are
-used to fill in the summary table specified in the *tblrender* directive.  The
+specified in both types of directives are combined: data values from one or more *tbldata*
+directives are used to fill in the summary table specified in a *tblrender* directive.  The
 values filled-in link to the "source" tables specified by the *tbldata* directive
 that display the citation for the values.
  
 
 This extension requires extension:
 `sphinxcontrib-bibtexpdflink <http://sphinxcontrib-bibtexpdflink.readthedocs.org/en/latest/>`_.
-The reason for this requrement, is that in order to generate the citations and references, this
+The reason for this requrement is that, in order to generate the citations and references, this
 extension requires extensions: 
 `sphinxcontrib-bibtex <http://sphinxcontrib-bibtex.readthedocs.org/en/latest/>`_ 
 and `sphinxcontrib-bibtex2 <https://github.com/mcmtroffaes/sphinxcontrib-bibtex/tree/develop/sphinxcontrib/bibtex2>`_,

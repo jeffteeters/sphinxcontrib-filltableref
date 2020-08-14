@@ -3,8 +3,9 @@
 tblrender
 =========
 
-The ``tblrender`` directive specifies what a summary table looks like (row and column titles and labels)
-but without including referenced values.  It is used in the following way:
+The *tblrender* directive (stands for "table render") specifies what a summary table looks
+like (row and column titles and labels) but without including referenced values.  (The referenced
+values are filled in when the document is created).  The directive is used in the following way:
 
 .. code-block:: bnf
 
@@ -161,7 +162,7 @@ below.  A prefilled value (population of New York) is included.
 Example
 .......
 
-An full example including both types of specifications is below.  The <gridtable specification> includes
+An example including both types of specifications is below.  The <gridtable specification> includes
 prefilled values ("-") along a diagonal.
 
 
@@ -179,9 +180,7 @@ prefilled values ("-") along a diagonal.
    give the number of connections from the Source cell to Target cells.  These are
    specified as a pair of numbers: FO,FI.  FO is fan-out (number of target cells each
    source cell contacts) and FI is fan-in (number of source cells going to each target
-   cell).  Most of the data is from Figure 2 in :cite:`LoebnerEE-1989`, but new data will
-   be added.
-   
+   cell).  The data is from Figure 2 in :cite:`LoebnerEE-1989`.
    
    .. tblrender:: table_loebner_fig2a
       :rows: "Source cell", "basket", "golgi", "granule", "purkinje", "stellate"
@@ -225,8 +224,7 @@ and the count (number) of cells of that type.  The values in the rest of the tab
 give the number of connections from the Source cell to Target cells.  These are
 specified as a pair of numbers: FO,FI.  FO is fan-out (number of target cells each
 source cell contacts) and FI is fan-in (number of source cells going to each target
-cell).  Most of the data is from Figure 2 in :cite:`LoebnerEE-1989`, but new data will
-be added.
+cell).  The data is from Figure 2 in :cite:`LoebnerEE-1989`.
    
 .. tblrender:: table_loebner_fig2a
    :rows: "Source cell", "basket", "golgi", "granule", "purkinje", "stellate"
