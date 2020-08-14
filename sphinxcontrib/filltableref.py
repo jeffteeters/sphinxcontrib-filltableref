@@ -35,96 +35,6 @@ import os
 from pybtex.style.template import (
     href, field, optional, sentence, words
 )
-# extensions = ['sphinxcontrib.bibtex']
-# exclude_patterns = ['_build']
-
-
-# class ApaLabelStyle(AlphaLabelStyle):
-#     def format_label(self, entry):
-#         # import pdb; pdb.set_trace()
-#         # from: https://stackoverflow.com/questions/55942749/how-do-you-change-the-style-of-pybtex-references-in-sphinx
-#         label = entry.key
-#         return label
-
-# class FootApaStyle(UnsrtStyle):
-#     def format_web_refs(self, e):
-#         # based on urlbst output.web.refs
-#         return sentence [
-#             optional [ self.format_url(e) ],
-#             optional [ self.format_eprint(e) ],
-#             optional [ self.format_pubmed(e) ],
-#             optional [ self.format_doi(e) ],
-#             # following added for pseudo cerebellum
-#             optional [ self.format_pdf(e) ],
-#             # optional [ self.format_rst(e) ],  # don't include rst link on footcite
-#             ]
-
-#     def format_pdf(self, entry):
-#         # if entry.key == "JaeckelLA-1989a":
-#         #     print("found JaeckelLA-1989a key")
-#         # print("In format_pdf, html_static_path2=%s" % html_static_path2)
-#         global saved_app
-#         base_path = saved_app.srcdir
-#         html_static_path = saved_app.config["html_static_path"]
-#         # import pdb; pdb.set_trace()
-#         pdf_name = entry.key + ".pdf"
-#         search_path = os.path.join(base_path, html_static_path[0], "papers", pdf_name)
-#         # search_path = "./_static/papers/" + pdf_name
-#         if os.path.isfile(search_path):
-#             print("----------- Found %s" % pdf_name)
-#             target_path = "../_static/papers/" + pdf_name
-#             return words [
-#                 'pdf:',
-#                 href [ target_path, pdf_name ]
-#             ]
-#         else:
-#             return words [""]
-
-#     def format_rst(self, entry):
-#         # create link to rst file if present
-#         global saved_app
-#         base_path = saved_app.srcdir
-#         rst_name = entry.key + ".rst"
-#         # if rst_name == "JaeckelLA-1989a.rst":
-#         #     print("found JaeckelLA-1989a key")
-#         #     import pdb; pdb.set_trace()
-#         # search_path = "./references/" + rst_name
-#         search_path = os.path.join(base_path, "references", rst_name)
-#         if os.path.isfile(search_path):
-#             html_name = entry.key + ".html"
-#             target_path = "../references/" + html_name
-#             print("----------- Found %s", rst_name)   
-#             return words [
-#                 'Notes:',
-#                 href [ target_path, html_name ]
-#             ]
-#         else:
-#             return words [""]
-
-# class ApaStyle(FootApaStyle):
-#     default_label_style = 'apa'
-#     default_sorting_style = 'author_year_title'
-
-#     def format_web_refs(self, e):
-#         # based on urlbst output.web.refs
-#         return sentence [
-#             optional [ self.format_url(e) ],
-#             optional [ self.format_eprint(e) ],
-#             optional [ self.format_pubmed(e) ],
-#             optional [ self.format_doi(e) ],
-#             # following added for pseudo cerebellum
-#             optional [ self.format_pdf(e) ],
-#             optional [ self.format_rst(e) ],   # include information about note page
-#             ]
-
-
-# register_plugin('pybtex.style.labels', 'apa', ApaLabelStyle)
-# register_plugin('pybtex.style.formatting', 'apastyle', ApaStyle)
-# register_plugin('pybtex.style.formatting', 'footapastyle', FootApaStyle)
-# # register_plugin('pybtex.style.sorting','apastyle', ApaStyle)
-# register_plugin('pybtex.style.sorting','apastyle', author_year_title)
-
-
 
 
 class tbldata(nodes.Admonition, nodes.Element):
@@ -332,7 +242,6 @@ def render_rst(d, rst):
     # convert restructured text in rst to nodes for output for directive "d"
     # this copied from sphinxcontrib.datatemplates
     #     DataTemplateBase(rst.Directive) run method
-    # added by Jeff Teeters
     result = ViewList()
     data_source = d.env.docname
     for line in rst.splitlines():
@@ -443,7 +352,6 @@ def generate_grid_tabledata(di):
     # add row title
     hrow1.append([0,num_cols-ct_offset-1,1,[col_title, ]])
     hrow2.append([0,0,1, [col_labels[ct_offset-1], ]])
-    # import pdb; pdb.set_trace()
     # complete headers
     for i in range(ct_offset, num_cols - 1):
         hrow1.append(None)
@@ -461,56 +369,10 @@ def generate_grid_tabledata(di):
     tabledata = [colwidths, headrows, bodyrows] 
     return tabledata
 
-
-
-# folling adapted from:
+# some code that was useful was adapted from:
 # https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/docutils/parsers/rst/states.py#l1786
 # def build_table_NOTUSED(tabledata, tableline, stub_columns=0, widths=None, classes=None):
-#     colwidths, headrows, bodyrows = tabledata
-#     table = nodes.table()
-#     if widths == 'auto':
-#         table['classes'] += ['colwidths-auto']
-#     elif widths: # "grid" or list of integers
-#         table['classes'] += ['colwidths-given']
-#     if classes is not None:
-#         table['classes'] += classes.split()
-#     tgroup = nodes.tgroup(cols=len(colwidths))
-#     table += tgroup
-#     for colwidth in colwidths:
-#         colspec = nodes.colspec(colwidth=colwidth)
-#         if stub_columns:
-#             colspec.attributes['stub'] = 1
-#             stub_columns -= 1
-#         tgroup += colspec
-#     if headrows:
-#         thead = nodes.thead()
-#         tgroup += thead
-#         for row in headrows:
-#             thead += build_table_row(row, tableline)
-#     tbody = nodes.tbody()
-#     tgroup += tbody
-#     for row in bodyrows:
-#         tbody += build_table_row(row, tableline)
-#     return [table]
-
-# def build_table_row_NOTUSED(rowdata, tableline):
-#     row = nodes.row()
-#     for cell in rowdata:
-#         if cell is None:
-#             continue
-#         morerows, morecols, offset, cellblock = cell
-#         attributes = {}
-#         if morerows:
-#             attributes['morerows'] = morerows
-#         if morecols:
-#             attributes['morecols'] = morecols
-#         entry = nodes.entry(**attributes)
-#         row += entry
-#         if ''.join(cellblock):
-#             # import pdb; pdb.set_trace()
-#             entry += nodes.paragraph(text=" ".join(cellblock).strip())
-#             # self.nested_parse(cellblock, input_offset=tableline+offset, node=entry)
-#     return row
+# (but no longer used)
 
 
 # class TblrenderDirective(Directive):
@@ -519,12 +381,12 @@ class TblrenderDirective(SphinxDirective):
     # format:
     # .. tblrender: <table_name>
     #    :description: <description of table>
-    #    :row_axis_description: <description of row axis>
-    #    :col_axis_description: <description of column axis>
-    #    :value_description: <description of each value>
-    #    :rows: <row axis name, list of rows, in JSON format, but without enclosing [ ]>
-    #    :cols: <column axis name, list of columns, in JSON format, but without enclosing [ ]>
-    # example:
+    #    :rows: <row title>, <row labels>
+    #    :cols: <col title>, <col labels>
+    #    :expanded_col_title: <expanded_col_title>
+    #    :ct_offset: <ct_offset>
+    #    :'gridlayout: <gridtable>
+    # example: (needs updating, see docs for latest)
     #.. tblrender: cell_counts
     #   :rows: "Cell type", "basket", "grannule"
     #   :cols: "species", "cat", "rat"
@@ -591,19 +453,9 @@ class TblrenderDirective(SphinxDirective):
             table_properties = gridtable_properties
         else:
             table_properties = ptable_properties
-
-        # target_node = make_target_node(self.env)
         tblrender_node = tblrender('')
-        # todo: generate rst to specify label:
-        # label = ".. _table_%s:" % table_name
-        # rst = "\n" + label + "\n"
-        # rst_nodes = render_rst(self, rst)
         # add description to rst for table
         desc_rst = render_rst(self, "\n" + description + "\n\n")
-        # rst_nodes += desc_rst + grid_table_rst
-        # rst_nodes += grid_table_rst
-#        .. _table_loebner_fig2a:
-#    OR patch labels and targets at end.  How to make reference to table.
         directive_info = {"docname": self.env.docname, "table_name":table_name,
              "desc_rst": desc_rst, "lineno": self.lineno,
              **table_properties,
@@ -611,117 +463,16 @@ class TblrenderDirective(SphinxDirective):
              "make_ptable": make_ptable
              }
         # save directive_info as attribute of object so is easy to retrieve in replace_tbldata_and_tblrender_nodes
-        # tblrender_node.directive_info = directive_info
         tblrender_node['directive_info'] = directive_info
-        # import pdb; pdb.set_trace()
         save_directive_info(self.env, 'tblrender', directive_info)
-        # return target_node for later reference from tbldata directive
-        # return tblrender_node to be replaced later by content of table
-        # return [target_node, tblrender_node]
-        # nodes = rst_nodes + [tblrender_node]
         nodes = desc_rst + [tblrender_node]
-        # import pdb; pdb.set_trace()
         return nodes
-
-
-# def example_list_table(test_ref):
-#     source_rst = """
-
-# .. list-table:: List tables can have captions like this one.
-#     :widths: 10 5 10 50
-#     :header-rows: 1
-#     :stub-columns: 1
-
-#     * - List table
-#       - Header 1
-#       - Header 2
-#       - Header 3 long. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet mauris arcu.
-#     * - Stub Row 1
-#       - Row 1
-#       - Column 2
-#       - Column 3 long. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet mauris arcu.
-#     * - Stub Row 2
-#       - Row 2
-#       - Column 2
-#       - Column 3 long. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet mauris arcu.
-#     * - Stub Row 3
-#       - Row 3
-#       - Column 2
-#       - Column 3 long. Lorem ipsum dolor sit amet, :cite:`%s` :footcite:`%s`.
-# """ % (test_ref, test_ref)
-#     return source_rst
-
-# def example_grid_table():
-#     source_rst = """
-# Test grid table.
-
-# +------------------------+----------------------------------+
-# |                        |               To Cell            |
-# +------------------------+------------+----------+----------+
-# | Header row, column 1   | Header 2   | Header 3 | Header 4 |
-# | (header rows optional) |            |          |          |
-# +========================+============+==========+==========+
-# | body row 1, column 1   | column 2   | column 3 | column 4 |
-# +------------------------+------------+----------+----------+
-# | body row 2             | ...        | ...      |          |
-# +------------------------+------------+----------+----------+
-# """
-#     return source_rst
-
-
-# def make_grid_table_rst():
-#     import docutils
-#     # from: https://www.generic-mapping-tools.org/sphinx_gmt/v0.1.1/_modules/docutils/parsers/rst.html
-#     parser = docutils.parsers.rst.Parser()
-#     input = example_grid_table()
-#     # from http://code.nabla.net/doc/docutils/api/docutils/utils/docutils.utils.new_document.html
-#     settings = docutils.frontend.OptionParser(
-#     components=(docutils.parsers.rst.Parser,)
-#     ).get_default_values()
-
-# 3. Create a new empty `docutils.nodes.document` tree::
-
-#        document = docutils.utils.new_document(source, settings)
-
-#    See `docutils.utils.new_document()` for parameter details.
-
-# 4. Run the parser, populating the document tree::
-
-#        parser.parse(input, document)
-
-tbldata_css = """
-.tbldata-title {
-  font-size: 120%;
-}
-
-table.tblrender p {
-   font-size:smaller
-}
-
-
-/* <dt class="bibtex label" id="albusjs-1981"><span class="brackets">AlbusJS-1981</span></dt>
-from: https://developer.mozilla.org/en-US/docs/Learn/CSS/Howto/Generated_content
-https://stackoverflow.com/questions/9882257/how-to-reference-a-long-class-name-with-spaces-in-css
-https://stackoverflow.com/questions/5467605/add-a-space-after-an-element-using-after
-*/
-
-span.brackets::before {
-  /* font-weight: bold; */
-  content: "[";
-}
-span.brackets::after {
-  /* font-weight: bold; */
-  white-space: pre;
-  content: "] ";
-}
-"""
 
 CSS_FILENAME = "filltableref.css"
 
 def add_assets(app):
     app.add_css_file(CSS_FILENAME)
     # app.add_js_file(JS_FILENAME)
-
 
 def copy_assets(app, exception):
     if app.builder.name not in ["html", "readthedocs"] or exception:
@@ -730,26 +481,11 @@ def copy_assets(app, exception):
         copyfile(os.path.join(os.path.abspath(os.path.dirname(__file__)), filename),
                  os.path.join(app.builder.outdir, "_static", filename))
 
-
 # from: https://groups.google.com/forum/#!msg/sphinx-users/Z-wcktOhIAc/pGDWO0yVBQAJ
-
-def html_page_context_NOT_USED(app, pagename, templatename, context, doctree):
-    """Add CSS string to HTML pages that contain code cells."""
-    global tbldata_css
-    if 'body' in context:
-        context['body'] = '\n<style>' + tbldata_css + '</style>\n' + context['body']
-        print("added css to body")
-    else:
-        print("did NOT add css to body")
-    # style = ''
-    # if doctree and doctree.get('nbsphinx_include_css'):
-    #     style += CSS_STRING % app.config
-    # if doctree and app.config.html_theme in ('sphinx_rtd_theme', 'julia'):
-    #     style += CSS_STRING_READTHEDOCS
-    # if doctree and app.config.html_theme in ('cloud', 'redcloud'):
-    #     style += CSS_STRING_CLOUD
-    # if style:
-    #     context['body'] = '\n<style>' + style + '</style>\n' + context['body']
+# (not used)
+# def html_page_context_NOT_USED(app, pagename, templatename, context, doctree):
+#   """Add CSS string to HTML pages that contain code cells."""
+   
 
 class TbldataDirective(SphinxDirective):
     # tbldata directive specifies data to be included in a table, and also to be shown where the directive is
@@ -879,172 +615,6 @@ class TbldataDirective(SphinxDirective):
         return output_nodes
 
 
-# class TbldataDirective_old(SphinxDirective):
-#     # tbldata directive specifies data to be included in a table, and also to be shown where the directive is
-#     # format:
-#     # .. tbldata: <table_name>
-#     #    :valrefs: <list of: <row, col, val, reference> in JSON format, without outer enclosing []>
-#     # example:
-#     # .. tbldata: cell_counts
-#     #    :valrefs: ["basket", "cat", 234, "Albus-1989"], ["basket", "rat", 298, "Jones-2002"]
-#     required_arguments = 1
-#     option_spec = {
-#         'valrefs': directives.unchanged_required,
-#         'comment': directives.unchanged,
-#     }
-#     # this enables content in the directive
-#     # include content as comment?
-#     has_content = True
-
-
-#     # Data for table :ref:`num_cells <table_num_cells>`
-#     # row: cat, col: basket, value: 89 :cite:`MarrD-1969` :footcite:`MarrD-1969`
-#     # row: human, col: basket, value: 878 :cite:`VanEssenDC-2002` :footcite:`VanEssenDC-2002`
-
-
-#     def run(self):
-#         table_name = get_table_name(self)
-#         valrefs = self.options.get('valrefs')
-#         content = self.content
-#         print("content=%s" % content)
-#         valrefs_decoded = json.loads( "[" + valrefs + "]" )
-#         target_node = make_target_node(self.env)
-#         # box = nodes.block_quote()
-#         # box = nodes.paragraph()
-#         # prefix_message = "Data for table "
-#         # prefix_node = nodes.paragraph(prefix_message, prefix_message)
-#         # generate info to display at directive location using rst so can include citation that uses sphinxbibtex extension, e.g. ":cite:
-#         # rst = "Data for *%s*\n\n%s\n\nSee :cite:`Albus-1989` for details." % (table_name, valrefs)
-#         tbldata_node = tbldata()
-#         title = "Data for table :ref:`%s <table_%s>`" % (table_name, table_name)
-#         # create a reference
-#         # newnode = nodes.reference('','')
-#         # newnode['refdocname'] = "index"
-#         # newnode['refuri'] = app.builder.get_relative_uri(
-#         #     fromdocname, "index")
-#         # newnode['refuri'] += '#' + ddi['target']['refid']
-#         # innernode = nodes.emphasis(vref, vref)
-#         # newnode.append(innernode)
-# #         title_lines = """
-
-# #    .. |emphasized hyperlink| replace:: *emphasized hyperlink*
-# #    .. _emphasized hyperlink: http://example.org
-
-# # """
-#         # heading = "Data for table"
-#         # title_node = nodes.title()
-#         # heading = "Here is an |emphasized hyperlink|_."
-#         # tbldata_node += nodes.title(heading, heading)
-#         # rst = title_lines.splitlines()
-#         rst = []
-#         rst.append(".. cssclass:: tbldata-title")
-#         rst.append("")         
-#         rst.append(title)
-#         rst.append("")
-#         # title_nodes = render_rst(self, "\n".join(rst))
-#         # title_node += title_nodes
-#         # tbldata_node += title_node
-#         test_ref = None
-
-#         for valref in valrefs_decoded:
-#             row, col, val, ref = valref
-#             if val == '-' and ref == '-':
-#                 # no reference for single dash so don't include :cite: and :footcite:
-#                 rst.append("   row=%s, col=%s, value='%s' ref='%s'" % (row, col, val, ref))
-#             else:
-#                 rst.append("   row=%s, col=%s, value='%s' :cite:`%s` :footcite:`%s`" % (row, col, val, ref, ref))
-#                 test_ref = ref
-#             rst.append("")
-#         rst = "\n".join(rst)
-#         rst += example_list_table(test_ref)
-#         # box_node = nodes.admonition(rst)
-#         # tbldata_node += nodes.title(_('Data for table'), _('Data for table'))
-#         # tbldata_node += nodes.title(_(''), _(''))
-#         rst_nodes = render_rst(self, rst)
-#         tbldata_node += rst_nodes
-#         # rst_nodes = render_rst(self, rst)
-#         # tbldata_node = tbldata('')
-#         directive_info = { "docname": self.env.docname, "lineno": self.lineno, "table_name":table_name,
-#             "valrefs":valrefs_decoded, "target":target_node} #  "tbldata_node": tbldata_node.deepcopy()
-#         # save directive_info as attribute of object so is easy to retrieve in replace_tbldata_and_tblrender_nodes
-#         tbldata_node.directive_info = directive_info
-#         save_directive_info(self.env, 'tbldata', directive_info)
-#         # box += prefix_node + tbldata_node + rst_nodes
-#         return [ target_node, tbldata_node ]
-
-
-# def NOTUSED_make_docutils_table(header, colwidths, data, hasLinks=False,
-#     col_title=None, ct_offset=1, tableName=None, descriptionRst=None):
-#     # col_title on top row above column labels, e.g. col_title = "Target cell", col_labels=["basket", "grannule", ...]
-#     # hasLinks set True if nodes made before call
-#     # from:
-#     # https://agateau.com/2015/docutils-snippets/
-#     # header = ('Product', 'Unit Price', 'Quantity', 'Price')
-#     #   colwidths = (2, 1, 1, 1)
-#     #    data = [
-#     #        ('Coffee', '2', '2', '4'),
-#     #        ('Orange Juice', '3', '1', '3'),
-#     #        ('Croissant', '1.5', '2', '3'),
-#     #    ]
-#     # tableName is added to table top
-#     # col_title is added to top row and spans all columns except first
-#     # descriptionRst is added before table body
-#     table = nodes.table()
-
-#     numcols = len(header)
-#     tgroup = nodes.tgroup(cols=numcols)
-#     table += tgroup
-#     for colwidth in colwidths:
-#         tgroup += nodes.colspec(colwidth=colwidth)
-#     thead = nodes.thead()
-#     tgroup += thead
-#     # include abscissaLabel header if present (spans columns 2-end, describes those columns.  eg. "To cell")
-#     if col_title is not None:
-#         row = nodes.row()
-#         # first ct_offset cells (entry) have no label
-#         for i in range(ct_offset):
-#             entry = nodes.entry()
-#             row += entry
-#         # cell after ct_offset spans all the others and has text
-#         entry = nodes.entry(morecols=(numcols - ct_offset - 1))
-#         row += entry
-#         entry += nodes.paragraph(text=col_title)
-#         thead += row
-#     # normal header
-#     thead += create_table_row(header, hasLinks)
-
-#     tbody = nodes.tbody()
-#     tgroup += tbody
-#     for data_row in data:
-#         tbody += create_table_row(data_row, hasLinks)
-#     return table
-
-# def NOTUSED_create_table_row(row_cells, hasLinks):
-#     row = nodes.row()
-#     for cell in row_cells:
-#         entry = nodes.entry()
-#         row += entry
-#         if hasLinks:
-#             try:
-#                 entry += cell
-#             except:
-#                 print("failed entry += cell")
-#                 import pdb; pdb.set_trace()
-#         else:
-#             entry += nodes.paragraph(text=cell)
-#     return row
-
-# def NOTUSED_make_docutils_test_table():
-#     header = ('Product', 'Unit Price', 'Quantity', 'Price')
-#     colwidths = (2, 1, 1, 1)
-#     data = [
-#         ('Coffee', '2', '2', '4'),
-#         ('Orange Juice', '3', '1', '3'),
-#         ('Croissant', '1.5', '2', '3'),
-#     ]
-#     table = make_docutils_table(header, colwidths, data)
-#     return table
-
 def format_table_data(tds, app, fromdocname):
     # format data provided in tbldata directives into nodes that can be inserted into tables
     # (specified by the tblrender directives)
@@ -1057,7 +627,6 @@ def format_table_data(tds, app, fromdocname):
                 ddis = tds["tbldata"][table_name][row][col]
                 para = nodes.paragraph()
                 first_node = True
-                # import pdb; pdb.set_trace()
                 for ddi in ddis:
                     target = ddi["target"]
                     row_info = ddi["valref"]
@@ -1078,11 +647,9 @@ def format_table_data(tds, app, fromdocname):
                             idref['refuri'] += '#' + target['refid']
                             reftext = " [" + target_id + "]"
                             idref_id = nodes.Text(reftext, reftext)
-                            # import pdb; pdb.set_trace()
-                            # idref_id["classes"] += [ "tblrender",]
                             idref.append(idref_id)
                             valtxt = nodes.Text(vval, vval)
-                            newnode = [valtxt, idref]  # hope += will work with lists
+                            newnode = [valtxt, idref]  # += works with lists
                         else:
                             # original code, no id-links
                             # create a reference
@@ -1113,92 +680,11 @@ def format_table_data(tds, app, fromdocname):
                 ftd[table_name][row][col] = entry_data
     return ftd
 
-# def generate_gridtable(table_name, tds, gridtable_properties, fromdocname):
-#     # gridtable_properties = { "tabledata": tabledata,
-#     # "row_title": row_title, "row_labels": row_labels,
-#     # "col_title": col_title, "col_labels": col_labels,
-#     # "row_map":row_map, "col_map":col_map}
-#     if table_name not in tds["tbldata"]:
-#         sys.exit("No data provided for gridtable %s" % table_name)
-#     row_map = gridtable_properties['row_map']
-#     col_map = gridtable_properties['col_map']
-#     tabledata = gridtable_properties['tabledata']
-#     colwidths, headrows, bodyrows = tabledata
-#     grid_tabledata = {}
-#     for row in tds["tbldata"][table_name]:
-#         assert row in row_map, "Row '%s' specified in data table not present in gridtable '%s'" % (row, table_name)
-#         for col in tds["tbldata"][table_name][row]:
-#             assert col in col_map, "Col '%s' specified in data table not present in gridtable '%s'" % (col, table_name)
-#             ddis = tds["tbldata"][table_name][row][col]
-#             para = nodes.paragraph()
-#             first_node = True
-#             for ddi in ddis:
-#                 target = ddi["target"]
-#                 valref = ddi["valref"]
-#                 vrow, vcol, vval, vref = valref
-#                 # check for "-" in both value and vref.  If found, just display '-' without a link to a target
-#                 # this is used to allow including dashes to indicate there can be no value for this table cell
-#                 if vval == '-' and vref == '-':
-#                     newnode = nodes.Text('-', '-')
-#                 else:
-#                     # create a reference
-#                     newnode = nodes.reference('','')
-#                     newnode['refdocname'] = ddi['docname']
-#                     newnode['refuri'] = app.builder.get_relative_uri(
-#                         fromdocname, ddi['docname'])
-#                     newnode['refuri'] += '#' + ddi['target']['refid']
-#                     # innernode = nodes.emphasis(vref, vref)
-#                     innernode = nodes.emphasis(vval, vval)
-#                     newnode.append(innernode)
-#                 # seperator = "; " if not first_node else ""
-#                 if not first_node:
-#                     seperator = "; "
-#                     para += nodes.Text(seperator, seperator)
-#                 first_node = False
-#                 # val_str = "%s%s " % (seperator, vval)
-#                 # para += nodes.Text(val_str, val_str)
-#                 para += newnode
-#             # save para in grid_tabledata
-#             if row not in grid_tabledata:
-#                 grid_tabledata[row] = {}
-#             grid_tabledata[row][col] = para
-
-
-# def NOTUSED_render_ptable(di, ftd):
-#     # di - directive info (dictionary of info describing table)
-#     table_name = di['table_name']
-#     row_title = di["row_title"]
-#     row_labels = di["row_labels"]
-#     col_title = di["col_title"]
-#     col_labels = di["col_labels"]
-#     tabledata = []
-#     for row in row_labels:
-#         # rowdata = [nodes.paragraph(text=row), ]
-#         rowdata = [nodes.strong(text=row), ]
-#         for col in col_labels:
-#             if (table_name in ftd
-#                 and row in ftd[table_name]
-#                 and col in ftd[table_name][row]):
-#                 para = ftd[table_name][row][col]
-#             else:
-#                 # no data for this cell
-#                 para = nodes.paragraph()
-#                 empty_flag = " "  # space to indicate empty contents
-#                 para += nodes.Text(empty_flag, empty_flag)
-#             rowdata.append(para)
-#         tabledata.append(rowdata)
-#     # colwidths = [1 for i in len(col_labels)]  # make all colwidts 1 for now
-#     header = [row_title] + col_labels
-#     colwidths = [1] * len(header)  # generates list like: [1, 1, 1, ... ]
-#     header_nodes = [nodes.paragraph(text=cell) for cell in header]
-#     table = make_docutils_table(header_nodes, colwidths, tabledata, hasLinks=True, col_title=col_title, ct_offset=2)
-#     return table
-
 
 def render_gridtable(di, grid_tabledata, ftd):
     # di - directive info (dictionary of info describing table)
     # grid_tabledata - structure generated from parsing gridtable or generated from ptable proprties
-    # ftd - formatted? table data - values to store in rendered table
+    # ftd - formatted table data - values to store in rendered table
     # print("entered render_gridtable; grid_tabledata=")
     # pp.pprint(grid_tabledata)
     # print("ftd=")
@@ -1214,7 +700,7 @@ def render_gridtable(di, grid_tabledata, ftd):
         row_map=row_map, col_map=col_map, ftd=ftd)
     return grid_table_rst
 
-# folling adapted from:
+# following adapted from:
 # https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/docutils/parsers/rst/states.py#l1786
 def render_gridtable_rst(tabledata, tableline, stub_columns=0, widths=None, classes=None,
     table_name=None, row_map=None, col_map=None, ftd=None):
@@ -1279,22 +765,6 @@ def build_gridtable_row(rowdata, tableline, table_name=None, row_num=None, row_m
         elif ftd_entry is not None:
             # entry += ftd[table_name][row_map[row_num]][col_map[cell_num-1]][0]
             entry += ftd_entry[0]
-        # try:
-        #     if ''.join(cellblock):
-        #         # import pdb; pdb.set_trace()
-        #         entry += nodes.paragraph(text=" ".join(cellblock).strip())
-        #         # self.nested_parse(cellblock, input_offset=tableline+offset, node=entry)
-        #     elif (ftd is not None and table_name in ftd and row_map[row_num] in ftd[table_name] and
-        #         col_map[cell_num-1] in ftd[table_name][row_map[row_num]]):
-        #         # have data for this cell
-        #         entry += ftd[table_name][row_map[row_num]][col_map[cell_num-1]]
-        # except KeyError as err:
-        #     print("Key error: {0}".format(err))
-        #     print("row_num=%s, row_map=%s" % (row_num, row_map))
-        #     print("cell_num=%s, col_map=%s" % (cell_num, col_map))
-        #     print("table_name=%s, ftd[table_name]=" % table_name)
-        #     pp.pprint(ftd[table_name])
-        #     sys.exit("aborting")
     return row
 
 
@@ -1317,7 +787,6 @@ def replace_tbldata_and_tblrender_nodes(app, doctree, fromdocname):
     # pp.pprint(tds['tbldata'])
     # print("ftd=")
     # pp.pprint(ftd)
-    # import pdb; pdb.set_trace()
     # tds has format:
     # {
     #   "tbldata":  # information from each tbldata directive, organized by table_name, row, col.
@@ -1337,25 +806,10 @@ def replace_tbldata_and_tblrender_nodes(app, doctree, fromdocname):
     # <rdi> ("render directive info") == {"docname": self.env.docname, "table_name":table_name, "rows":rows, "cols":cols,
     #         "target": target_node, "tblrender_node": tblrender_node.deepcopy()}
 
-    # print("visiting tblrender nodes")
-
     # insert description into tbldata tables
     # temporary, try to get directive info for tbldata
     for node in doctree.traverse(tblrender):
-        # di = node.directive_info
         di = node['directive_info']
-        # print ("visiting node, source=%s" % node.source)
-        # print ("directive_info=%s" % di)
-        # {'docname': 'index', 'table_name': 'num_cells', 'rows': '"Cell type", stellate, grannule',
-        # 'cols': 'Species, cat human', 'target': <target: >}
-        # directive_info = {"docname": self.env.docname, "table_name":table_name,
-        #      "desc_rst": desc_rst, "lineno": self.lineno,
-        #      **table_properties,
-        #      "grid_tabledata": grid_tabledata,
-        #      "make_ptable": make_ptable
-        # }
-        # print("made it to body of replace_tbldata_and_tblrender_nodes, docname=%s" % di["docname"])
-        # sect = nodes.section()
         node_lst = []  # node list
         # para1 = nodes.paragraph()
         # msg = "tblrender tables go here"
@@ -1379,30 +833,15 @@ def replace_tbldata_and_tblrender_nodes(app, doctree, fromdocname):
             grid_tabledata = di["grid_tabledata"]
             gridtable = render_gridtable(di, grid_tabledata, ftd)
             node_lst.append(gridtable)
-        # print("in replace_tbldata_and_tblrender_nodes, about to replace_self")
-        # node.set_class("tbldata-title")
         node += node_lst
-        # import pdb; pdb.set_trace()
         node.replace_self(node_lst)
-        # print("in replace_tbldata_and_tblrender_nodes, just replaced self")
-    # return
 
     # insert description into tbldata tables
     for node in doctree.traverse(tbldata):
-        # if hasattr(node, 'directive_info'):
-        #     di = node.directive_info
         if 'directive_info' in node.attributes:
             di = node['directive_info']
             table_name = di['table_name']
             desc_rst = tds['tblrender'][table_name][0]['desc_rst']
-
-            # import pdb; pdb.set_trace()
-            # print("replacing tbldata node in docname '%s' with:" % di["docname"])
-            # pp.pprint(desc_rst)
-            # insert desc_rsts before tables
-            # node.children[2:2] = desc_rst
-            # node += desc_rest # crashes with:  NotImplementedError: Unknown node: tblrender
-            # import pdb; pdb.set_trace()
             for i in range(1, len(node.parent.children)):
                 if node.parent.children[i] == node:
                     break;
@@ -1415,293 +854,11 @@ def replace_tbldata_and_tblrender_nodes(app, doctree, fromdocname):
             # node.replace_self(desc_rst)
     return
 
-
-        # scratch code below
-#     for i in range(10):
-#         table_name = di['table_name']
-#         row_title = di["row_title"]
-#         row_labels = di["row_labels"]
-#         col_title = di["col_title"]
-#         col_labels = di["col_labels"]
-#         gridtable_properties = di["gridtable_properties"]
-#         if gridtable_properties is not None:
-#             gridtable_rst = generate_gridtable(table_name, tds, gridtable_properties, fromdocname)
-#         else:
-#             gridtable_rst = []
-#         # description = di["description"]
-#         tabledata = []
-#         for row_num in range(len(row_labels)):
-#             row = row_labels[row_num]
-#             # rowdata = [nodes.paragraph(text=row), ]
-#             rowdata = [nodes.strong(text=row), ]
-#             for col in col_labels:
-#                 if (table_name in tds["tbldata"]
-#                     and row in tds["tbldata"][table_name]
-#                     and col in tds["tbldata"][table_name][row]):
-#                     # entry = []
-#                     ddis = tds["tbldata"][table_name][row][col]  # data directive info entries
-#                     # print("row=%s, col=%s, ddis=" % (row, col))
-#                     # pp.pprint(ddis)
-#                     # import pdb; pdb.set_trace()
-#                     # each "ddi" (below loop) will look like:
-#                     # {"docname": docname, "lineno": lineno, "target":target, "valref": data_quad}
-#                     # data_quad format: [<row>, <col>, <value>, <valref>]  - all strings
-#                     # example: ["grannule", "cat", "35", "JGran1972"]
-#                     para = nodes.paragraph()
-#                     first_node = True
-#                     for ddi in ddis:
-#                         target = ddi["target"]
-#                         valref = ddi["valref"]
-#                         vrow, vcol, vval, vref = valref
-#                         # if vrow != row:
-#                         #     print("vrow=%s, vcol=%s" % (vrow, vcol))
-#                         #     import pdb; pdb.set_trace()
-#                         # should make this stronger assertion
-#                         assert vrow.endswith(row)
-#                         assert vcol.endswith(col)
-#                         # check for "-" in both value and vref.  If found, just display '-' without a link to a target
-#                         # this is used to allow including dashes to indicate there can be no value for this table cell
-#                         if vval == '-' and vref == '-':
-#                             newnode = nodes.Text('-', '-')
-#                         else:
-#                             # create a reference
-#                             newnode = nodes.reference('','')
-#                             newnode['refdocname'] = ddi['docname']
-#                             newnode['refuri'] = app.builder.get_relative_uri(
-#                                 fromdocname, ddi['docname'])
-#                             newnode['refuri'] += '#' + ddi['target']['refid']
-#                             # innernode = nodes.emphasis(vref, vref)
-#                             innernode = nodes.emphasis(vval, vval)
-#                             newnode.append(innernode)
-#                         # seperator = "; " if not first_node else ""
-#                         if not first_node:
-#                             seperator = "; "
-#                             para += nodes.Text(seperator, seperator)
-#                         first_node = False
-#                         # val_str = "%s%s " % (seperator, vval)
-#                         # para += nodes.Text(val_str, val_str)
-#                         para += newnode
-#                         # entry.append("%s--%s" % (vval, vref))
-#                     # entry = ", ".join(entry)
-
-#                     Comment = """
-#                     para = nodes.paragraph()
-#                     first_node = True
-#                     for ddi in ddis:
-#                         target = ddi["target"]
-#                         valref = ddi["valref"]
-#                         vrow, vcol, vval, vref = valref
-#                         assert vrow == row
-#                         assert vcol == col
-#                         # create a reference
-#                         newnode = nodes.reference('','')
-#                         newnode['refdocname'] = ddi['docname']
-#                         newnode['refuri'] = app.builder.get_relative_uri(
-#                             fromdocname, ddi['docname'])
-#                         newnode['refuri'] += '#' + ddi['target']['refid']
-#                         # innernode = nodes.emphasis(vref, vref)
-#                         innernode = nodes.emphasis(vval, vval)
-#                         newnode.append(innernode)
-#                         # seperator = "; " if not first_node else ""
-#                         if not first_node:
-#                             seperator = "; "
-#                             para += nodes.Text(seperator, seperator)
-#                         first_node = False
-#                         # val_str = "%s%s " % (seperator, vval)
-#                         # para += nodes.Text(val_str, val_str)
-#                         para += newnode
-#                         # entry.append("%s--%s" % (vval, vref))
-#                     # entry = ", ".join(entry)
-#                     # end Comment """
-
-#                 else:
-#                     # entry = ""
-#                     # print("empty cell found")
-#                     # import pdb; pdb.set_trace()
-#                     # sys.exit("Aborting.")
-#                     para = nodes.paragraph()
-#                     empty_flag = " "  # space to indicate empty contents
-#                     para += nodes.Text(empty_flag, empty_flag)
-#                 # rowdata.append(entry)
-#                 rowdata.append(para)
-#             tabledata.append(rowdata)
-#         # colwidths = [1 for i in len(col_labels)]  # make all colwidts 1 for now
-#         header = [row_title] + col_labels
-#         colwidths = [1] * len(header)  # generates list like: [1, 1, 1, ... ]
-#         header_nodes = [nodes.paragraph(text=cell) for cell in header]
-#         table = make_docutils_table(header_nodes, colwidths, tabledata, hasLinks=True, col_title=col_title)
-#         # grid_rst = make_grid_table_rst()
-#         node.replace_self(table)
-#     # insert description into tbldata tables
-#     for node in doctree.traverse(tbldata):
-#         try:
-#             di = node.directive_info
-#         except:
-#             print("unable to get tbldata directive info, node id = %s" % id(node))
-#             return
-#             # with open("doctree.txt", "w") as fp:
-#             #     fp.write(doctree.pformat())
-#             # pp.pprint(node)
-#             # import pdb; pdb.set_trace()
-#         print("--**-- found directive_info for node id=%s" % id(node))
-#         table_name = di['table_name']
-#         desc_rst = tds['tblrender'][table_name][0]['desc_rst']
-#         # insert desc_rsts before tables
-#         node.children[2:2] = desc_rst
-#     return
-
-
-#     print("visiting tbldata nodes")
-#     for node in doctree.traverse(tbldata):
-#         di = node.directive_info
-#         # directive_info = { "docname": self.env.docname, "lineno": self.lineno, "table_name":table_name,
-#         #     "valrefs":valrefs_decoded, "target":target_node}
-#         table_name = di["table_name"]
-#         # <rdi> ("render directive info") == {"docname": self.env.docname, "table_name":table_name, "rows":rows, "cols":cols,
-#         #         "target": target_node}
-#         rdi = tds["tblrender"][table_name][0]  # zero to select first table
-#         # create a reference
-#         newnode = nodes.reference('','')
-#         newnode['refdocname'] = rdi['docname']
-#         newnode['refuri'] = app.builder.get_relative_uri(
-#             fromdocname, rdi['docname'])
-#         newnode['refuri'] += '#' + rdi['target']['refid']
-#         innernode = nodes.emphasis(table_name, table_name)
-#         newnode.append(innernode)
-#         para = nodes.paragraph(text="Data for table ")
-#         para += newnode
-#         node.replace_self(para)
-#         return
-
-
-#     print("visiting target nodes")
-#     for node in doctree.traverse(nodes.target):
-#         directive_info = node.directive_info
-#         print ("visiting node, source=%s" % node.source)
-#         print ("directive_info=%s" % directive_info)
-#         import pdb; pdb.set_trace()
-#         # if 'refid' in node and node['refid'].startswith('tbldata-'):
-#         #     refid = node['refid']
-#         #     # found target node created by this module, following node should be tblrender or tbldata
-#         #     # get following node
-#         #     node_traverse = node.traverse(include_self=False, descend = False, siblings = True)
-#         #     next_node = node_traverse[0]
-#         #     if isinstance(next_node, tblrender):
-#         #         print("Found %s, followed by tblrender" % refid)
-#         #     elif isinstance(next_node, tbldata):
-#         #         print("Found %s, followed by tbldata" % refid)
-#         #     else:
-#         #         print("Unknown node found after %s, %s" % (refid, type(next_node)))
-#         #         import pdb; pdb.set_trace()
-
-
-#     for table_name in tds["tblrender"]:
-#         for rdi in tds["tblrender"][table_name]:
-#             # for now, just output text having all the information
-#             tblrender_node = rdi["tblrender_node"]
-#             rows = rdi["rows"]
-#             cols = rdi["cols"]
-#             multvals = []
-#             for row in tds["tbldata"][table_name]:
-#                 for col in tds["tbldata"][table_name][row]:
-#                     valrefs = tds["tbldata"][table_name][row]
-#                     entry = "row=%s col=%s valrefs=%s" % (row, col, valrefs)
-#                     multvals.append(entry)
-#             multvals = "\n".join(multvals)
-#             description = "table: %s\nrows: %s\ncols: %s\nvals: %s\n" % (table_name, rows, cols, multvals)
-#             para = nodes.paragraph()
-#             para += nodes.Text(description, description)
-#             content = [ para, ]
-#             import pdb; pdb.set_trace()
-#             tblrender_node.replace_self(content)
-
-
-
-# def process_tbldata_nodes_old(app, doctree, fromdocname):
-#     assert false
-#     if not app.config.tbldata_include_tbldata:
-#         for node in doctree.traverse(tbldata):
-#             node.parent.remove(node)
-
-#     # Replace all tblrender nodes with a list of the collected tbldata.
-#     # Augment each tbldata with a backlink to the original location.
-#     env = app.builder.env
-
-#     for node in doctree.traverse(tblrender):
-#         if not app.config.tbldata_include_tbldata:
-#             node.replace_self([])
-#             continue
-
-#         content = []
-
-#         for tbldata_info in env.tbldata_all_tbldata:
-#             para = nodes.paragraph()
-#             filename = env.doc2path(tbldata_info['docname'], base=None)
-#             description = (
-#                 _('(The original entry is located in %s, line %d and can be found ') %
-#                 (filename, tbldata_info['lineno']))
-#             para += nodes.Text(description, description)
-
-#             # Create a reference
-#             newnode = nodes.reference('', '')
-#             innernode = nodes.emphasis(_('here'), _('here'))
-#             newnode['refdocname'] = tbldata_info['docname']
-#             newnode['refuri'] = app.builder.get_relative_uri(
-#                 fromdocname, tbldata_info['docname'])
-#             newnode['refuri'] += '#' + tbldata_info['target']['refid']
-#             newnode.append(innernode)
-#             para += newnode
-#             para += nodes.Text('.)', '.)')
-
-#             # Insert into the tblrender
-#             content.append(tbldata_info['tbldata'])
-#             content.append(para)
-
-#         content = build_test_table()
-#         node.replace_self(content)
-
-# def build_test_table(app, doctree, fromdocname):
-#     print("in build_test_table")
-#     rst = """
-# .. -*- mode: rst -*-
-
-
-# .. list-table:: Table from nested lists
-#    :header-rows: 1
-
-#    - * One
-#      * Two
-#      * Three
-#    - * a
-#      * b
-#      * :ref:`stellate`
-#    - * A
-#      * B
-#      * C
-
-
-# For more data see :ref:`stellate` link.
-# """
-#     result = ViewList()
-#     rendered_template = rst
-#     data_source = 'data.json'
-#     # import pdb; pdb.set_trace()
-#     for line in rendered_template.splitlines():
-#         result.append(line, data_source)
-#     node = nodes.section()
-#     node.document = self.state.document
-#     nested_parse_with_titles(self.state, result, node)
-#     return node.children
-
-
 saved_app = None
 def setup(app):
-    # app.add_config_value('tbldata_include_tbldata', False, 'html')
     # save app so can get config value and source directory for building links to PDF files
     global saved_app
     saved_app = app
-    # print("Starting setup in tbldata.py")
-    # app.add_config_value('filltableref_base_path', False, 'html')
 
     app.add_node(tblrender)
     app.add_node(tbldata,
@@ -1725,4 +882,3 @@ def setup(app):
         'parallel_read_safe': True,
         'parallel_write_safe': True,
     }
-
