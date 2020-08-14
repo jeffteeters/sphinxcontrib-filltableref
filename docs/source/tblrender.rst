@@ -48,8 +48,8 @@ the specifications (this document) since that shows explicitly the relationship 
  
   
 
-ptable specification
-....................
+<ptable specification>
+......................
 
 <ptable specification> contains:
 
@@ -72,6 +72,8 @@ The entities in angle brackets are either strings (enclosed in single or double 
    List of the row labels, each element seperated by a comma.  These go in the first column, under the <row title>.
    Example: "New York", "London", "Chicago", ...
 
+.. _tblrender_col_title:
+
 <col title>
    The title displayed above the <col labels> in the header of the table.  Example: "Season" (for a
    table showning average temperaure during each season).
@@ -80,20 +82,20 @@ The entities in angle brackets are either strings (enclosed in single or double 
    List of the column labels, each element seperated by a comma.  Example: "Population", "Spring", "Fall", "Summer", ...
 
 <ct_offset>
-   A positive integer specifying the number of columns (counting left to right), for which the <col label> is
-   not an instance of the <col title>.  If not specified, the default is one (since the first column contains
-   the <row title>, which is not an instance of the <col title>).  A value greater
+   A positive integer specifying the number of columns (counting left to right), for which the <col label> does
+   not subcategorize the <col title>.  If not specified, the default is one (since the first column contains
+   the <row title>, which does not subcategorize the <col title>).  A value greater
    than one specifies a table in which the header for some columns after the first column have a <col lable>
-   that does not appear under the <col title>.  This is used for creating the summary table header.
+   that does not appear under the <col title>.  This is used for creating the table header.
 
    For example, with the previous example values, <ct_offset> would be 2, to indicate that the "Population"
-   column label is not an instance of the <col title> ("Season"), and thus "Population" should not be under
-   "Season" in the table header.  e.g., the header (and table) would look like:
+   column label is not an instance of the <col title> ("Season"), and thus "Population" should
+   not be under "Season" in the table header.  e.g., the header (and table) would look like:
 
    .. code-block:: rst
    
       +----------+------------+-----------------------------------+
-      |          |            |  Season                           |
+      |          |            | Season                            |
       |          |            +--------+--------+--------+--------+
       | City     | Population | Fall   | Winter | Spring | Summer |
       +==========+============+========+========+========+========+
@@ -103,7 +105,9 @@ The entities in angle brackets are either strings (enclosed in single or double 
       +----------+------------+--------+--------+--------+--------+
       | Chicago  |            |        |        |        |        |
       +----------+------------+--------+--------+--------+--------+
-       
+
+.. _tblrender_expanded_col_title:
+
 <expanded_col_title>
    This is a string that can be used in place of the <col title> as the column title for the column containing
    values in the source tables (made by the :ref:`tbldata` directive).  If the <gridtable specification> is used
@@ -114,52 +118,52 @@ The entities in angle brackets are either strings (enclosed in single or double 
    must match the layout given in the <gridtable specification> if both are present.
 
    Using the values in the above examples, if derived from a <gridtable specification>, <expanded_col_title>
-   would be "Population or Season"
+   would be "Population or Season".
 
 
-An example is below:
+The full <ptable specification>  for the table shown above is:
 
 .. code-block:: rst
 
-   :rows: "Source cell", "basket", "golgi", "granule", "purkinje", "stellate"
-   :cols: "Target cell", "Cell count", "basket", "golgi", "granule", "purkinje", "stellate"
-   :expanded_col_title: "Cell count or Target cell"
+   :rows: "City", "New York", "London", "Chicago"
+   :cols: "Season", "Population", "Fall", "Winter", "Spring", "Summer"
+   :expanded_col_title: "Population or Season"
    :ct_offset: 2
 
 
-gridtable specification
-.......................
+<gridtable specification>
+.........................
 
 
-<gridtable specification> contains a ``:gridLayout:`` parameter followed by a Sphinx grid table.
-Pre-filled values can be included in the cells.  An example is below, which has pre-filled values of
-"-" along a diagonal:
+<gridtable specification> contains a ``:gridLayout:`` parameter followed by a reStructuredText
+`grid table <https://docutils.sourceforge.io/docs/user/rst/quickref.html#tables>`_.
+Pre-filled values can be included in the cells.  The specification for the table shown earlier is
+below.  A prefilled value (population of New York) is included.
 
 .. code-block:: rst
 
    :gridLayout:
-      +-------------+----------+------------------------------------------------------------------+
-      |             |          |  Target cell                                                     |
-      | Source      | Cell     +------------+------------+------------+-------------+-------------+
-      | cell        | count    | basket     | golgi      | granule    | purkinje    | stellate    |
-      +=============+==========+============+============+============+=============+=============+
-      | basket      |          |      -     |            |            |             |             |
-      +-------------+----------+------------+------------+------------+-------------+-------------+
-      | golgi       |          |            |      -     |            |             |             |
-      +-------------+----------+------------+------------+------------+-------------+-------------+
-      | granule     |          |            |            |      -     |             |             |
-      +-------------+----------+------------+------------+------------+-------------+-------------+
-      | purkinje    |          |            |            |            |      -      |             |
-      +-------------+----------+------------+------------+------------+-------------+-------------+
-      | stellate    |          |            |            |            |             |      -      |
-      +-------------+----------+------------+------------+------------+-------------+-------------+
+      +----------+------------+-----------------------------------+
+      |          |            | Season                            |
+      |          |            +--------+--------+--------+--------+
+      | City     | Population | Fall   | Winter | Spring | Summer |
+      +==========+============+========+========+========+========+
+      | New York | 8 million  |        |        |        |        |
+      +----------+------------+--------+--------+--------+--------+
+      | London   |            |        |        |        |        |
+      +----------+------------+--------+--------+--------+--------+
+      | Chicago  |            |        |        |        |        |
+      +----------+------------+--------+--------+--------+--------+
 
 
+.. _tblrender_example:
 
 Example
 .......
 
-An full example including both types of specifications is:
+An full example including both types of specifications is below.  The <gridtable specification> includes
+prefilled values ("-") along a diagonal.
+
 
 .. code-block:: rst
 
@@ -208,7 +212,7 @@ An full example including both types of specifications is:
 
 It is rendered as shown below.  The values for some of the cells followed by links to the source
 of the value are fill-in during the rendering process.  These values are specified in the "source"
-table using the :ref:`tbldata` directive.
+table given on the next page using the :ref:`tbldata` directive.
 
 .. _table_loebner_fig2a:
 

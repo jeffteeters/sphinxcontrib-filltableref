@@ -43,7 +43,8 @@ The entities in angle brackets are:
    The row title specified in the ``tblrender`` directive.
 
 <expanded col title>
-   Either the <expanded_col_title> or the <col title> specified in the *tblrender* directive.
+   Either the :ref:`<expanded_col_title> <tblrender_expanded_col_title>` 
+   or the :ref:`<col title> <tblrender_col_title>` specified in the :ref:`tblrender` directive.
    (Either one is allowed, whatever seems most understandable should be used).
 
 <row label-a>
@@ -79,7 +80,7 @@ An example is shown below:
    
 
 
-This is rendered as:
+This is combined with the :ref:`tblrender_example` *tblrender* directive on the previous page to generate:
 
 
 .. tbldata:: table_loebner_fig2a
