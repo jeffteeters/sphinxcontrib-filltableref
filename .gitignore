@@ -1,0 +1,10 @@
+# Sphinx documentation
+dist/
+build/
+docs/build/
+**/.DS_Store
+**/#*#
+*~
+sphinxcontrib_filltableref.egg-info/
+
+
