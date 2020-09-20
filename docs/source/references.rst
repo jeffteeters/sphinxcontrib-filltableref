@@ -8,7 +8,7 @@ extension which builds on the
 the `sphinxcontrib-bibtex <http://sphinxcontrib-bibtex.readthedocs.org/en/latest/>`_
 extension by adding links to included PDF and :ref:`notes` files to the references.
 
-.. bibliography:: references/refs.bib
+.. bibliography:: refs.bib
    :all:
    :style: apastyle
 

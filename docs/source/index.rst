@@ -6,4 +6,4 @@ Fill tables with values that are linked to references
    install
    usage
    notes/notes
-   references/references
+   references

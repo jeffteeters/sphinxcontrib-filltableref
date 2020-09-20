@@ -7,7 +7,7 @@ with open("README.rst") as f:
 
 setup(
     name="sphinxcontrib-filltableref",
-    version="0.1.5",
+    version="0.1.6",
     author="Jeff Teeters",
     author_email="jeff@teeters.us",
     license="MIT",

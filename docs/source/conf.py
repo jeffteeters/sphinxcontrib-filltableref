@@ -33,7 +33,7 @@ extensions = [
   'sphinxcontrib.bibtex',
   'sphinxcontrib.bibtex2',
 ]
-bibtex_bibfiles = ['references/refs.bib']
+bibtex_bibfiles = ['refs.bib']
 bibtex_style = 'footapastyle'
 
 bibtexpdflink_pdf_dir = "papers"
